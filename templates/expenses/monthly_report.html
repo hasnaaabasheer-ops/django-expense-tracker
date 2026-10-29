@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+
+{% block title %}Monthly Report | Expense Tracker{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+        <h2 class="fw-bold">Monthly Report</h2>
+        <p class="text-muted mb-0">
+            Analyze your spending for a specific month.
+        </p>
+    </div>
+
+    <a href="{% url 'dashboard' %}" class="btn btn-secondary">
+        Dashboard
+    </a>
+
+</div>
+
+
+<!-- MONTH SELECTOR -->
+
+<div class="card shadow-sm mb-4">
+
+    <div class="card-body">
+
+        <h5 class="fw-bold mb-3">
+            Select Month
+        </h5>
+
+        <form method="GET">
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        Month
+                    </label>
+
+                    <select name="month" class="form-select">
+
+                        {% for m in "123456789101112"|make_list %}
+
+                        {% endfor %}
+
+                        <option value="1" {% if month == 1 %}selected{% endif %}>
+                            January
+                        </option>
+
+                        <option value="2" {% if month == 2 %}selected{% endif %}>
+                            February
+                        </option>
+
+                        <option value="3" {% if month == 3 %}selected{% endif %}>
+                            March
+                        </option>
+
+                        <option value="4" {% if month == 4 %}selected{% endif %}>
+                            April
+                        </option>
+
+                        <option value="5" {% if month == 5 %}selected{% endif %}>
+                            May
+                        </option>
+
+                        <option value="6" {% if month == 6 %}selected{% endif %}>
+                            June
+                        </option>
+
+                        <option value="7" {% if month == 7 %}selected{% endif %}>
+                            July
+                        </option>
+
+                        <option value="8" {% if month == 8 %}selected{% endif %}>
+                            August
+                        </option>
+
+                        <option value="9" {% if month == 9 %}selected{% endif %}>
+                            September
+                        </option>
+
+                        <option value="10" {% if month == 10 %}selected{% endif %}>
+                            October
+                        </option>
+
+                        <option value="11" {% if month == 11 %}selected{% endif %}>
+                            November
+                        </option>
+
+                        <option value="12" {% if month == 12 %}selected{% endif %}>
+                            December
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="col-md-4">
+
+                    <label class="form-label">
+                        Year
+                    </label>
+
+                    <input
+                        type="number"
+                        name="year"
+                        class="form-control"
+                        value="{{ year }}"
+                        min="2000"
+                        max="2100"
+                    >
+
+                </div>
+
+
+                <div class="col-md-4 d-flex align-items-end">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100"
+                    >
+                        Generate Report
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- MONTHLY TOTAL -->
+
+<div class="row g-4 mb-4">
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <p class="text-muted mb-1">
+                    Total Spent
+                </p>
+
+                <h2 class="fw-bold">
+                    ₹{{ total|floatformat:2 }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-6">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body">
+
+                <p class="text-muted mb-1">
+                    Highest Transaction
+                </p>
+
+                {% if highest %}
+
+                    <h4 class="fw-bold">
+                        ₹{{ highest.amount|floatformat:2 }}
+                    </h4>
+
+                    <p class="mb-0">
+                        {{ highest.title }}
+                    </p>
+
+                {% else %}
+
+                    <h4 class="text-muted">
+                        No expenses
+                    </h4>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CATEGORY BREAKDOWN -->
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h4 class="fw-bold mb-4">
+            Category Breakdown
+        </h4>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover">
+
+                <thead class="table-dark">
+
+                    <tr>
+                        <th>Category</th>
+                        <th>Transactions</th>
+                        <th>Total</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                {% for item in category_summary %}
+
+                    <tr>
+
+                        <td>
+                            <span class="badge bg-primary">
+                                {{ item.category }}
+                            </span>
+                        </td>
+
+                        <td>
+                            {{ item.count }}
+                        </td>
+
+                        <td class="fw-bold">
+                            ₹{{ item.total|floatformat:2 }}
+                        </td>
+
+                    </tr>
+
+                {% empty %}
+
+                    <tr>
+
+                        <td
+                            colspan="3"
+                            class="text-center text-muted py-4"
+                        >
+                            No expenses found for this month.
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

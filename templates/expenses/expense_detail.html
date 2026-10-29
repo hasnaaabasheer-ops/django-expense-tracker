@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block title %}Expense Details | Expense Tracker{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-lg-8">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body p-4">
+
+                <div class="d-flex justify-content-between align-items-center mb-4">
+
+                    <div>
+                        <h2 class="fw-bold mb-1">
+                            {{ expense.title }}
+                        </h2>
+
+                        <span class="badge bg-primary">
+                            {{ expense.category }}
+                        </span>
+                    </div>
+
+                    <h3 class="fw-bold">
+                        ₹{{ expense.amount|floatformat:2 }}
+                    </h3>
+
+                </div>
+
+                <hr>
+
+                <div class="row g-4 mt-2">
+
+                    <div class="col-md-6">
+
+                        <p class="text-muted mb-1">
+                            Date
+                        </p>
+
+                        <p class="fw-semibold">
+                            {{ expense.date }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <p class="text-muted mb-1">
+                            Payment Method
+                        </p>
+
+                        <p class="fw-semibold">
+                            {{ expense.payment_method }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <p class="text-muted mb-1">
+                            Created At
+                        </p>
+
+                        <p class="fw-semibold">
+                            {{ expense.created_at|date:"d M Y, h:i A" }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <p class="text-muted mb-1">
+                            Expense ID
+                        </p>
+
+                        <p class="fw-semibold">
+                            #{{ expense.id }}
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div>
+
+                    <h5 class="fw-bold">
+                        Description
+                    </h5>
+
+                    {% if expense.description %}
+
+                        <p class="text-muted">
+                            {{ expense.description }}
+                        </p>
+
+                    {% else %}
+
+                        <p class="text-muted">
+                            No description provided.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+                <hr>
+
+                <div class="d-flex gap-2">
+
+                    <a
+                        href="{% url 'expense_update' expense.pk %}"
+                        class="btn btn-warning"
+                    >
+                        Edit
+                    </a>
+
+                    <a
+                        href="{% url 'expense_delete' expense.pk %}"
+                        class="btn btn-danger"
+                    >
+                        Delete
+                    </a>
+
+                    <a
+                        href="{% url 'expense_list' %}"
+                        class="btn btn-secondary"
+                    >
+                        Back to Expenses
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
